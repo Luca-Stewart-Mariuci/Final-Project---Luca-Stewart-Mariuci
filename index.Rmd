@@ -11,10 +11,27 @@ output:
 
 ## Project thoughts
 
-I am interested in exploring data related to two possible reasearch topics:
+Looking at the differences between property amount a school district spends per student, and seeing if that has an impact on the performance of students. Seeing if more money means better school and at what degree is the difference is caused by income of differing school districts.
 
-1) Looking how many 3rd party candidates result in a spoiler effect for local elections: State House and State Senate. This would involve gathering data on general elections with three or more candidates and seeing what percentage of elections are effected by a spoiler candidate.
 
-OR
 
-2) Looking at the differences between property taxes of different school districts and comparing the tax received and the performances of schools in WI and/or MN. Seeing if more money means better school and at what degree is the diffrence is cuased by income of differing school districts.
+Does the average per-pupil price, that being the average amount of money a school district spends, in Wisconsin affect the average report card score school for that district. My hypothesis is that the higher a per-pupil price is, the higher the average student performance will be in said district. This is because the more money a school district spends on an individual student means that the students will have more resources available to them. This will then lead to a higher performance of students in said district. To better understand this I will be looking at two variables, the per-pupil price and the average report card score for the 2023-2024 school year. The explanatory variable will be the per-pupil price. This variable will show the average amount of money a Wisconsin public school district is spending on one student. This variable is obtained by looking at the Total Cost of Education, also known as the TEC, then dividing it by the membership of a given district. The variable of interest will be the average report card score per district. The report card score is the average performance of students in a public school district. This score is based on multiple factors including, performance in subjects, growth of students in different subjects, the ability to close the achievement gaps, and on track and postsecondary readiness of students. This score is on 0.0 - 100.00 point scale, with 0.0 being the worst a school distinct can do, and 100.00 being the best. Both variables are taken from the Department of Public Instruction, which by law collects and publishes this data. An outcome that would support my hypothesis would be one that showcases the school districts that have the highest per-pupil price, and would also have the highest average report card score. There are two potential outcomes that would disprove my hypothesis. One would be one that showcases that having a higher per-pupil price would show a lower report card score. Suggesting that the schools that pay the most per student are those with a lower report card score trying to increase it. The second outcome would be one that per-pupil price doesn't impact the average report card score. Showing there isn't a relationship between the two variables and would imply another factor for student performance.
+
+## Data being used for My Reasearch Project
+
+Data for the 2023-2024 district report cards
+```{r}
+library(readxl)
+X2023_2024_district_report_card <- read_excel("2023-2024_district_report_card.xlsx")
+View(X2023_2024_district_report_card)
+```
+
+Data for the 2023-2024 district average spending
+```{r}
+library(readxl)
+cmpcst24_1_ <- read_excel("cmpcst24 (1).xlsx")
+View(cmpcst24_1_)
+```
+
+
+
