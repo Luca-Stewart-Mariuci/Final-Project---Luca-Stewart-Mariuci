@@ -19,18 +19,16 @@ Does the average per-pupil price, that being the average amount of money a schoo
 
 ## Data being used for My Reasearch Project
 
-Data for the 2023-2024 district report cards
 ```{r}
 library(readxl)
 X2023_2024_district_report_card <- read_excel("2023-2024_district_report_card.xlsx")
-View(X2023_2024_district_report_card)
+head(X2023_2024_district_report_card)
 ```
 
-Data for the 2023-2024 district average spending
 ```{r}
 library(readxl)
 cmpcst24_1_ <- read_excel("cmpcst24 (1).xlsx")
-View(cmpcst24_1_)
+head(cmpcst24_1_)
 ```
 
 

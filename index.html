@@ -1548,23 +1548,50 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 <p>Looking at the differences between property amount a school district spends per student, and seeing if that has an impact on the performance of students. Seeing if more money means better school and at what degree is the difference is caused by income of differing school districts.</p>
 <p>Does the average per-pupil price, that being the average amount of money a school district spends, in Wisconsin affect the average report card score school for that district. My hypothesis is that the higher a per-pupil price is, the higher the average student performance will be in said district. This is because the more money a school district spends on an individual student means that the students will have more resources available to them. This will then lead to a higher performance of students in said district. To better understand this I will be looking at two variables, the per-pupil price and the average report card score for the 2023-2024 school year. The explanatory variable will be the per-pupil price. This variable will show the average amount of money a Wisconsin public school district is spending on one student. This variable is obtained by looking at the Total Cost of Education, also known as the TEC, then dividing it by the membership of a given district. The variable of interest will be the average report card score per district. The report card score is the average performance of students in a public school district. This score is based on multiple factors including, performance in subjects, growth of students in different subjects, the ability to close the achievement gaps, and on track and postsecondary readiness of students. This score is on 0.0 - 100.00 point scale, with 0.0 being the worst a school distinct can do, and 100.00 being the best. Both variables are taken from the Department of Public Instruction, which by law collects and publishes this data. An outcome that would support my hypothesis would be one that showcases the school districts that have the highest per-pupil price, and would also have the highest average report card score. There are two potential outcomes that would disprove my hypothesis. One would be one that showcases that having a higher per-pupil price would show a lower report card score. Suggesting that the schools that pay the most per student are those with a lower report card score trying to increase it. The second outcome would be one that per-pupil price doesn’t impact the average report card score. Showing there isn’t a relationship between the two variables and would imply another factor for student performance.</p>
 <h2 id="data-being-used-for-my-reasearch-project">Data being used for My Reasearch Project</h2>
-Data for the 2023-2024 district report cards
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://readxl.tidyverse.org'>readxl</a></span><span class='op'>)</span></span>
 <span><span class='va'>X2023_2024_district_report_card</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://readxl.tidyverse.org/reference/read_excel.html'>read_excel</a></span><span class='op'>(</span><span class='st'>"2023-2024_district_report_card.xlsx"</span><span class='op'>)</span></span>
-<span><span class='fu'><a href='https://rdrr.io/r/utils/View.html'>View</a></span><span class='op'>(</span><span class='va'>X2023_2024_district_report_card</span><span class='op'>)</span></span></code></pre>
+<span><span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span><span class='op'>(</span><span class='va'>X2023_2024_district_report_card</span><span class='op'>)</span></span></code></pre>
 </div>
+<pre><code># A tibble: 6 × 131
+  `School Year` `DPI Agency Key`  CESA `District Code` `School Code`
+  &lt;chr&gt;                    &lt;dbl&gt; &lt;dbl&gt;           &lt;dbl&gt; &lt;chr&gt;        
+1 2023-24                   1302     1            2450 20           
+2 2023-24                   3818     2            6013 20           
+3 2023-24                   3051     2             657 20           
+4 2023-24                   2566     2             665 20           
+5 2023-24                   5422     1             721 NA           
+6 2023-24                    937     1            1015 NA           
+# ℹ 126 more variables: `District Name` &lt;chr&gt;, `School Name` &lt;chr&gt;,
+#   `Report Card Level` &lt;chr&gt;, `Overall Accountability Score` &lt;chr&gt;,
+#   `Overall Accountability Rating` &lt;chr&gt;,
+#   `Lowest Grade Level` &lt;chr&gt;, `Highest Grade Level` &lt;dbl&gt;,
+#   `Agency Type` &lt;chr&gt;, `Report Card Type` &lt;chr&gt;,
+#   `School Type` &lt;chr&gt;, `Grade Band for Comparison` &lt;chr&gt;,
+#   `School Enrollment` &lt;chr&gt;, `District Enrollment` &lt;dbl&gt;, …</code></pre>
 </div>
-Data for the 2023-2024 district average spending
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://readxl.tidyverse.org'>readxl</a></span><span class='op'>)</span></span>
 <span><span class='va'>cmpcst24_1_</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://readxl.tidyverse.org/reference/read_excel.html'>read_excel</a></span><span class='op'>(</span><span class='st'>"cmpcst24 (1).xlsx"</span><span class='op'>)</span></span>
-<span><span class='fu'><a href='https://rdrr.io/r/utils/View.html'>View</a></span><span class='op'>(</span><span class='va'>cmpcst24_1_</span><span class='op'>)</span></span></code></pre>
+<span><span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span><span class='op'>(</span><span class='va'>cmpcst24_1_</span><span class='op'>)</span></span></code></pre>
 </div>
+<pre><code># A tibble: 6 × 12
+  2023-2024 School Distric…¹ ...2  ...3  ...4  ...5  ...6  ...7  ...8 
+  &lt;chr&gt;                      &lt;chr&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt;
+1 Comparative Cost Data      &lt;NA&gt;  &lt;NA&gt;  &lt;NA&gt;  &lt;NA&gt;  &lt;NA&gt;  &lt;NA&gt;  &lt;NA&gt; 
+2 Total State Cost Per Memb… &lt;NA&gt;  &lt;NA&gt;  &lt;NA&gt;  1831… &lt;NA&gt;  &lt;NA&gt;  &lt;NA&gt; 
+3 Sorted by District Name    &lt;NA&gt;  &lt;NA&gt;  &lt;NA&gt;  &lt;NA&gt;  TOTA… &lt;NA&gt;  &lt;NA&gt; 
+4 &lt;NA&gt;                       &lt;NA&gt;  &lt;NA&gt;  &lt;NA&gt;  &lt;NA&gt;  EDUC… &lt;NA&gt;  &lt;NA&gt; 
+5 &lt;NA&gt;                       &lt;NA&gt;  &lt;NA&gt;  &lt;NA&gt;  &lt;NA&gt;  COST  TRAN… FACI…
+6 CODE                       COUN… CESA  TYPE  NAME  (TCE… COST  COST 
+# ℹ abbreviated name:
+#   ¹​`2023-2024 School District Annual Report Data *`
+# ℹ 4 more variables: ...9 &lt;chr&gt;, ...10 &lt;chr&gt;, ...11 &lt;chr&gt;,
+#   ...12 &lt;chr&gt;</code></pre>
 </div>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r distill-force-highlighting-css"><code class="sourceCode r"></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r distill-force-highlighting-css"><code class="sourceCode r"></code></pre></div>
 <!--radix_placeholder_article_footer-->
 <!--/radix_placeholder_article_footer-->
 </div>
