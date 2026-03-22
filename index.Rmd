@@ -141,7 +141,7 @@ school_district_graph <- school_district |>
     caption = "Wisconsin Department of Public Instruction"
   )
 
-school_district_graph
+plot(school_district_graph)
 ```
 
 
