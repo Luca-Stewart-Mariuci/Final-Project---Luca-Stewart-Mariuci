@@ -15,7 +15,7 @@ Looking at the differences between property amount a school district spends per 
 
 
 
-Does the average per-pupil price, that being the average amount of money a school district spends, in Wisconsin affect the average report card score school for that district. My hypothesis is that the higher a per-pupil price is, the higher the average student performance will be in said district. This is because the more money a school district spends on an individual student means that the students will have more resources available to them. This will then lead to a higher performance of students in said district. To better understand this I will be looking at two variables, the per-pupil price and the average report card score for the 2023-2024 school year. The explanatory variable will be the per-pupil price. This variable will show the average amount of money a Wisconsin public school district is spending on one student. This variable is obtained by looking at the Total Cost of Education, also known as the TEC, then dividing it by the membership of a given district. The variable of interest will be the average report card score per district. The report card score is the average performance of students in a public school district. This score is based on multiple factors including, performance in subjects, growth of students in different subjects, the ability to close the achievement gaps, and on track and postsecondary readiness of students. This score is on 0.0 - 100.00 point scale, with 0.0 being the worst a school distinct can do, and 100.00 being the best. Both variables are taken from the Department of Public Instruction, which by law collects and publishes this data. An outcome that would support my hypothesis would be one that showcases the school districts that have the highest per-pupil price, and would also have the highest average report card score. There are two potential outcomes that would disprove my hypothesis. One would be one that showcases that having a higher per-pupil price would show a lower report card score. Suggesting that the schools that pay the most per student are those with a lower report card score trying to increase it. The second outcome would be one that per-pupil price doesn't impact the average report card score. Showing there isn't a relationship between the two variables and would imply another factor for student performance.
+Does the average per-pupil price, that being the average amount of money a school district spends, in Wisconsin affect the average report card score school for that district. My hypothesis is that the higher a per-pupil price is, the higher the average student performance will be in said district. This is because the more money a school district spends on an individual student means that the students will have more resources available to them. This will then lead to a higher performance of students in said district. To better understand this I will be looking at two variables, the per-pupil price and the average report card score for the 2023-2024 school year. The explanatory variable will be the per-pupil price. This variable will show the average amount of money a Wisconsin public school district is spending on one student. This variable is obtained by looking at the Total Cost of Education, also known as the TEC, then dividing it by the membership of a given district. The variable of interest will be the average report card score per district. The report card score is the average performance of students in a public school district. This score is based on multiple factors including, performance in subjects, growth of students in different subjects, the ability to close the achievement gaps, and on track and post secondary readiness of students. This score is on 0.0 - 100.00 point scale, with 0.0 being the worst a school distinct can do, and 100.00 being the best. Both variables are taken from the Department of Public Instruction, which by law collects and publishes this data. An outcome that would support my hypothesis would be one that showcases the school districts that have the highest per-pupil price, and would also have the highest average report card score. There are two potential outcomes that would disprove my hypothesis. One would be one that showcases that having a higher per-pupil price would show a lower report card score. Suggesting that the schools that pay the most per student are those with a lower report card score trying to increase it. The second outcome would be one that per-pupil price doesn't impact the average report card score. Showing there isn't a relationship between the two variables and would imply another factor for student performance.
 
 ## Data being used for My Reasearch Project
 
@@ -31,5 +31,115 @@ cmpcst24_1_ <- read_excel("cmpcst24 (1).xlsx")
 head(cmpcst24_1_)
 ```
 
+## Cleaning Data Up and Visualizing it.
+
+For my research project I need to clean up two data sets, both which are released from the Wisconsin Department of Public Instruction. The first set is was released as a part of the annual report card data, which also host other important variables like school district members, which is the number of students who attend school in a given district. The second data set is a apart of the annual release expenditures release, while it has all the amounts of money spent per category we only need the TCEC, which stands for the Total Current Education Cost.
+
+```{r}
+library(tidyverse)
+library(dplyr)
+```
+
+# Fist Lets Clean Up The Report Card Data
+
+```{r}
+report_card <- X2023_2024_district_report_card 
+
+report_card <- report_card |>
+  select("District Name", "Overall Accountability Score", "Overall Accountability Rating", "Grade Band for Comparison", "District Enrollment") 
+
+report_card
+```
+
+First I needed to assign the data to a new object. I did this so I could later save the select columns back into the new object without messing up the original data set.
+
+When cleaning up the data set I only had to isolate the columns I wanted, school district, Overall Accountability score, the total score a school gets out of 100 this is based on multiple factors including test scores, graduation rates, post graduation success, ct, we also needed he overall Accountability Accountability Rating which is the rating a school is given based on their score, and the total enrollment per district. This leads us with the final data set needed for the report card
+
+
+#Lets clean up total cost of education
+
+
+Next we will isolate the columns we need, being the school district and the TCEC (total current cost of education), this is the total expenditures of each district.
+
+```{r}
+tcec_per_district <- cmpcst24_1_
+
+tcec_per_district <- tcec_per_district |>
+  select("...5", "...6")
+
+tcec_per_district
+```
+
+Then we will rename the columns because for some reason when importing the data it messed up the names of the columns, naming them ...5 and ...6 instead of Total Current Education Cost and District Name.
+
+```{r}
+tcec_per_district <- tcec_per_district |>
+  rename(
+    `District Name` = `...5`,
+    `TCEC` = `...6`) 
+
+tcec_per_district
+```
+
+After fixing the column names we will need to get rid of any NA's or other random names that entered the data when importing it. It also gets rid of any school districts that lack funding data.
+
+```{r}
+tcec_per_district <- tcec_per_district |>
+  filter(
+  `District Name` != " ", `District Name`!= "NAME", `District Name` != "18310.044339754681", `District Name` != "Statewide Total")
+  
+tcec_per_district
+```
+
+# Now Lets Join These Data Sets
+
+We are going to use inner_join to combine report_card and tcec_per_district, this will get ride of any variable that don't match up for the two data sets. I am also assigning it to the a new data set called school district, since its now all the info we need for each school district.
+
+```{r}
+school_district <- tcec_per_district |>
+  inner_join(report_card)
+
+school_district
+```
+
+First I need to resign some numbers that are considers by are to be Characters. This involved using mutate() and as.numeric() for TCEC and Overall Accountability Score because those variables were assigned <chr> instead of <dbl>.
+
+```{r}
+school_district <- school_district |>
+  mutate(
+    "TCEC" = as.numeric(`TCEC`),
+    "Overall Accountability Score" = as.numeric(`Overall Accountability Score`))
+```
+
+
+Now that its fixed we can calculate the Per-Pupil Price, which the Total Current Education Cost decided by the District Enrollment.
+```{r}
+school_district <- school_district |>
+    mutate(
+      "Per-Pupil Price" = `TCEC` / `District Enrollment`
+      )
+    
+school_district
+```
+
+# Now Lets Graph it 
+
+Since we not finally have the two variables we need we can now visualize it. To do so we are going to use a scatter plot. To create this scatter plot we are going to use the variables Per-Pupil Price as the X-axis and the Overall Accountability Score as the Y-axis.
+
+```{r}
+school_district |>
+  ggplot(aes(x = `Per-Pupil Price`,
+             y = `Overall Accountability Score`)) + 
+  geom_point() +
+  geom_smooth() +
+  labs(
+    title = "Impact of The Funding Per Student and Impact it Has",
+    subtitle = "Comparison of The Per-Pupil Price and The Overall Accountavility Score Per School Distirct",
+    x = "Per-Pupil Price Per Distirct",
+    y = "Overall Accountability Score Per District",
+    caption = "Wisconsin Department of Public Instruction"
+    
+  )
+```
 
 
