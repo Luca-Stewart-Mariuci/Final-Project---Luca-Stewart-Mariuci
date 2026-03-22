@@ -128,7 +128,7 @@ school_district
 Since we not finally have the two variables we need we can now visualize it. To do so we are going to use a scatter plot. To create this scatter plot we are going to use the variables Per-Pupil Price as the X-axis and the Overall Accountability Score as the Y-axis.
 
 ```{r}
-school_district |>
+school_district_graph <- school_district |>
   ggplot(aes(x = `Per-Pupil Price`,
              y = `Overall Accountability Score`)) + 
   geom_point() +
@@ -139,8 +139,9 @@ school_district |>
     x = "Per-Pupil Price Per Distirct",
     y = "Overall Accountability Score Per District",
     caption = "Wisconsin Department of Public Instruction"
-    
   )
+
+school_district_graph
 ```
 
 
