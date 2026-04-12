@@ -145,3 +145,20 @@ plot(school_district_graph)
 ```
 
 
+# Looking at the data through the lens of a table.
+
+For this table I want to look at the data and see the averages of the TCEC of per-pupil for each category of performance. These ranges of performance score  0 - 48.9 "Fails to Meet Expectations," 49 - 59.9 "Meets Few Expectations," 60 - 70.9 "Meets Expectations," 71 - 83.9 "Exceeds Expectations," and 84 - 100 "Significantly Exceeds Expectations"
+
+```{r}
+mean_tcec_by_category <- school_district |>
+  group_by(`Overall Accountability Rating`) |>
+  summarize(
+    `Mean of Per-Pupil TCEC` = mean(`Per-Pupil Price`, na.rm = TRUE),
+    `Number` = n()) |>
+  knitr::kable(digits = 2)
+mean_tcec_by_category
+```
+
+## Looking at the Results
+
+When looking at the results we can see that for the average the groups that receive the most money are the groups in the middle, that being Meets Expectations and Exceeds Expectations. While the groups that have lowest per-pupil average are Significantly Exceeds and Meets few expectations. While the results do not support my hypothesis it also doesn't fully disprove it. It suggest that their is a disparity of the funding, but the full picture does change since the group with the least amount per-pupil average is those who have the highest scores. 

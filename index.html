@@ -1793,6 +1793,52 @@ Now that its fixed we can calculate the Per-Pupil Price, which the Total Current
 </div>
 <p><img src="index_files/figure-html5/unnamed-chunk-11-1.png" alt="" width="624" /></p>
 </div>
+<h1 id="looking-at-the-data-through-the-lens-of-a-table.">Looking at the data through the lens of a table.</h1>
+<p>For this table I want to look at the data and see the averages of the TCEC of per-pupil for each category of performance. These ranges of performance score 0 - 48.9 “Fails to Meet Expectations,” 49 - 59.9 “Meets Few Expectations,” 60 - 70.9 “Meets Expectations,” 71 - 83.9 “Exceeds Expectations,” and 84 - 100 “Significantly Exceeds Expectations”</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='va'>mean_tcec_by_category</span> <span class='op'>&lt;-</span> <span class='va'>school_district</span> <span class='op'>|&gt;</span></span>
+<span>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/group_by.html'>group_by</a></span><span class='op'>(</span><span class='va'>`Overall Accountability Rating`</span><span class='op'>)</span> <span class='op'>|&gt;</span></span>
+<span>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/summarise.html'>summarize</a></span><span class='op'>(</span></span>
+<span>    `Mean of Per-Pupil TCEC` <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/mean.html'>mean</a></span><span class='op'>(</span><span class='va'>`Per-Pupil Price`</span>, na.rm <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>,</span>
+<span>    `Number` <span class='op'>=</span> <span class='fu'><a href='https://dplyr.tidyverse.org/reference/context.html'>n</a></span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>|&gt;</span></span>
+<span>  <span class='fu'>knitr</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/knitr/man/kable.html'>kable</a></span><span class='op'>(</span>digits <span class='op'>=</span> <span class='fl'>2</span><span class='op'>)</span></span>
+<span><span class='va'>mean_tcec_by_category</span></span></code></pre>
+</div>
+<table>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Overall Accountability Rating</th>
+<th style="text-align: right;">Mean of Per-Pupil TCEC</th>
+<th style="text-align: right;">Number</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Exceeds Expectations</td>
+<td style="text-align: right;">14628.60</td>
+<td style="text-align: right;">126</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Meets Expectations</td>
+<td style="text-align: right;">16132.75</td>
+<td style="text-align: right;">201</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Meets Few Expectations</td>
+<td style="text-align: right;">16692.08</td>
+<td style="text-align: right;">24</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Significantly Exceeds Expectations</td>
+<td style="text-align: right;">13703.76</td>
+<td style="text-align: right;">22</td>
+</tr>
+</tbody>
+</table>
+</div>
+<h2 id="looking-at-the-results">Looking at the Results</h2>
+<p>When looking at the results we can see that for the average the groups that receive the most money are the groups in the middle, that being Meets Expectations and Exceeds Expectations. While the groups that have lowest per-pupil average are Significantly Exceeds and Meets few expectations. While the results do not support my hypothesis it also doesn’t fully disprove it. It suggest that their is a disparity of the funding, but the full picture does change since the group with the least amount per-pupil average is those who have the highest scores.</p>
 <div class="sourceCode" id="cb9"><pre class="sourceCode r distill-force-highlighting-css"><code class="sourceCode r"></code></pre></div>
 <!--radix_placeholder_article_footer-->
 <!--/radix_placeholder_article_footer-->
