@@ -9,6 +9,10 @@ output:
 
 ### Schools Districts Performace and Per-Pupil Score: Does the Amount of Money Spent Increase Quality of Education
 
+
+## Introduction
+
+
 This project is looking at the impact that the amount of money a school district spends on an individual student, and the report card score of a individual school district. 
 
 # Hypothesis
@@ -138,7 +142,6 @@ school_district_graph <- school_district |>
   ggplot(aes(x = `Per-Pupil Price`,
              y = `Overall Accountability Score`)) + 
   geom_point() +
-  geom_smooth() +
   labs(
     title = "Impact of The Funding Per Student and Impact it Has",
     subtitle = "Comparison of The Per-Pupil Price and The Overall Accountavility Score Per School Distirct",
@@ -164,6 +167,20 @@ mean_tcec_by_category <- school_district |>
   knitr::kable(digits = 2)
 mean_tcec_by_category
 ```
+
+
+# Regression
+
+```{r}
+school_district_graph +
+  geom_smooth(method = "lm", se = FALSE, color = "brown4", size = 1.5)
+```
+
+```{r}
+tcec_reg <- lm(`Overall Accountability Score` ~ `Per-Pupil Price` , data = school_district)
+tcec_reg
+```
+When looking at the slope and intercept we can see that the more money that is given to it is predicted to get 0.0007937 percent worse. This means that the decrease of the slope is so small that it likely is not have a significant impact. This implied that the more money that you give to a school, it is not expected to make a diffrence.
 
 ## Looking at the Results
 
