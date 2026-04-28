@@ -25,11 +25,12 @@ library(dplyr)
 ```
 
 
-```{r loading the data into R}
+```{r loading-the-data-into-R}
 library(readxl)
 X2023_2024_district_report_card <- read_excel("2023-2024_district_report_card.xlsx")
 head(X2023_2024_district_report_card)
-
+```
+```{r}
 library(readxl)
 cmpcst24_1_ <- read_excel("cmpcst24 (1).xlsx")
 head(cmpcst24_1_)
@@ -41,7 +42,7 @@ For my research project I need to clean up the two data sets, both which are rel
 
 # First Lets Clean Up The Report Card Data
 
-```{r Selecting the Data Needed}
+```{r Selecting-the-Data-Needed}
 report_card <- X2023_2024_district_report_card 
 
 report_card <- report_card |>
@@ -60,7 +61,7 @@ When cleaning up the data set I only had to isolate the columns I wanted being, 
 
 Next we will isolate the columns we need, being the school district and the TCEC (total current cost of education), this is the total expenditures of each district.
 
-```{r Selecting the Data Needed}
+```{r Selecting-the-Data-Needed-2}
 tcec_per_district <- cmpcst24_1_
 
 tcec_per_district <- tcec_per_district |>
@@ -71,7 +72,7 @@ tcec_per_district
 
 Then we will rename the columns because for some reason when importing the data it messed up the names of the columns, naming them ...5 and ...6 instead of Total Current Education Cost and District Name.
 
-```{r Renaming the Data}
+```{r Renaming-the-Data}
 tcec_per_district <- tcec_per_district |>
   rename(
     `District Name` = `...5`,
@@ -82,7 +83,7 @@ tcec_per_district
 
 After fixing the column names we will need to get rid of any NA's or other random names that entered the data when importing it. It also gets rid of any school districts that lack funding data.
 
-```{r Cleaning Up the Data Through Filter}
+```{r Cleaning-Up-the-Data-Through-Filter}
 tcec_per_district <- tcec_per_district |>
   filter(
   `District Name` != " ", `District Name`!= "NAME", `District Name` != "18310.044339754681", 
@@ -95,7 +96,7 @@ tcec_per_district
 
 We are going to use inner_join to combine report_card and tcec_per_district, this will get ride of any variable that don't match up for the two data sets. I am also assigning it to the a new data set called school district, since its now all the info we need for each school district.
 
-```{r Joining T Data Sets}
+```{r Joining-T-Data-Sets}
 school_district <- tcec_per_district |>
   inner_join(report_card)
 
@@ -104,7 +105,7 @@ school_district
 
 First I need to resign some numbers that are considers by are to be Characters. This involved using mutate() and as.numeric() for TCEC and Overall Accountability Score because those variables were assigned <chr> instead of <dbl>.
 
-```{r Creating Numeric Based Variables}
+```{r Creating-Numeric-Based-Variables}
 school_district <- school_district |>
   mutate(
     "TCEC" = as.numeric(`TCEC`),
@@ -127,7 +128,7 @@ school_district
 
 Since we not finally have the two variables we need we can now visualize it. To do so we are going to use a scatter plot. To create this scatter plot we are going to use the variables Per-Pupil Price as the X-axis and the Overall Accountability Score as the Y-axis.
 
-```{r Making The Graph}
+```{r Making-The-Graph}
 school_district_graph <- school_district |>
   ggplot(aes(x = `Per-Pupil Price`,
              y = `Overall Accountability Score`)) + 
@@ -148,7 +149,7 @@ plot(school_district_graph)
 
 For this table I want to look at the data and see the averages of the TCEC of per-pupil for each category of performance. These ranges of performance score  0 - 48.9 "Fails to Meet Expectations," 49 - 59.9 "Meets Few Expectations," 60 - 70.9 "Meets Expectations," 71 - 83.9 "Exceeds Expectations," and 84 - 100 "Significantly Exceeds Expectations"
 
-```{r Creating a Table Based On Overall Accountability Rating}
+```{r Creating-a-Table-Based-On-Overall-Accountability-Rating}
 mean_tcec_by_category <- school_district |>
   group_by(`Overall Accountability Rating`) |>
   summarize(
@@ -161,12 +162,12 @@ mean_tcec_by_category
 
 # Regression
 
-```{r Looking At the Regression}
+```{r Looking-At-the-Regression}
 school_district_graph +
   geom_smooth(method = "lm", se = FALSE, color = "brown4", size = 1.5)
 ```
 
-```{r Calculating the Regression}
+```{r Calculating-the-Regression}
 tcec_reg <- lm(`Overall Accountability Score` ~ `Per-Pupil Price` , data = school_district)
 tcec_reg
 ```

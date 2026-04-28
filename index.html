@@ -116,7 +116,7 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
   <!--/radix_placeholder_rmarkdown_metadata-->
   
   <script type="text/json" id="radix-resource-manifest">
-  {"type":"character","attributes":{},"value":["2023-2024_district_report_card.xlsx","cmpcst24 (1).xlsx","compcost_detail_0809_to_2324.xlsx","index_files/anchor-4.2.2/anchor.min.js","index_files/bowser-1.9.3/bowser.min.js","index_files/distill-2.2.21/template.v2.js","index_files/figure-html5/unnamed-chunk-11-1.png","index_files/figure-html5/unnamed-chunk-13-1.png","index_files/header-attrs-2.17/header-attrs.js","index_files/header-attrs-2.30/header-attrs.js","index_files/jquery-3.6.0/jquery-3.6.0.js","index_files/jquery-3.6.0/jquery-3.6.0.min.js","index_files/jquery-3.6.0/jquery-3.6.0.min.map","index_files/popper-2.6.0/popper.min.js","index_files/tippy-6.2.7/tippy-bundle.umd.min.js","index_files/tippy-6.2.7/tippy-light-border.css","index_files/tippy-6.2.7/tippy.css","index_files/tippy-6.2.7/tippy.umd.min.js","index_files/webcomponents-2.0.0/webcomponents.js"]}
+  {"type":"character","attributes":{},"value":["2023-2024_district_report_card.xlsx","cmpcst24 (1).xlsx","compcost_detail_0809_to_2324.xlsx","index_files/anchor-4.2.2/anchor.min.js","index_files/bowser-1.9.3/bowser.min.js","index_files/distill-2.2.21/template.v2.js","index_files/figure-html5/Looking-At-the-Regression-1.png","index_files/figure-html5/Making-The-Graph-1.png","index_files/figure-html5/unnamed-chunk-11-1.png","index_files/figure-html5/unnamed-chunk-13-1.png","index_files/header-attrs-2.17/header-attrs.js","index_files/header-attrs-2.30/header-attrs.js","index_files/jquery-3.6.0/jquery-3.6.0.js","index_files/jquery-3.6.0/jquery-3.6.0.min.js","index_files/jquery-3.6.0/jquery-3.6.0.min.map","index_files/popper-2.6.0/popper.min.js","index_files/tippy-6.2.7/tippy-bundle.umd.min.js","index_files/tippy-6.2.7/tippy-light-border.css","index_files/tippy-6.2.7/tippy.css","index_files/tippy-6.2.7/tippy.umd.min.js","index_files/webcomponents-2.0.0/webcomponents.js"]}
   </script>
   <!--radix_placeholder_navigation_in_header-->
   <!--/radix_placeholder_navigation_in_header-->
@@ -1551,6 +1551,12 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 <h2 id="data-being-used-for-my-reasearch-project">Data being used for My Reasearch Project</h2>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://tidyverse.tidyverse.org'>tidyverse</a></span><span class='op'>)</span></span>
+<span><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://dplyr.tidyverse.org'>dplyr</a></span><span class='op'>)</span></span></code></pre>
+</div>
+</div>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://readxl.tidyverse.org'>readxl</a></span><span class='op'>)</span></span>
 <span><span class='va'>X2023_2024_district_report_card</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://readxl.tidyverse.org/reference/read_excel.html'>read_excel</a></span><span class='op'>(</span><span class='st'>"2023-2024_district_report_card.xlsx"</span><span class='op'>)</span></span>
 <span><span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span><span class='op'>(</span><span class='va'>X2023_2024_district_report_card</span><span class='op'>)</span></span></code></pre>
@@ -1594,13 +1600,7 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 </div>
 <h2 id="cleaning-data-up-and-visualizing-it.">Cleaning Data Up and Visualizing it.</h2>
 <p>For my research project I need to clean up the two data sets, both which are released from the Wisconsin Department of Public Instruction. The first set was released as a part of the annual report card data, This data shows the score that each school receives, it also has another important variable being School District Members, which is the number of students who attend school in a given district. The second data set is a apart of the annual release of expenditures. This data set has an important data for my project being TCEC, Total Current Education Cost. I will need to use the School District Member and TCEC to calculate the Per-Pupil Price, which is the average amount of money a school district spends for each student they have.</p>
-<div class="layout-chunk" data-layout="l-body">
-<div class="sourceCode">
-<pre class="sourceCode r"><code class="sourceCode r"><span><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://tidyverse.tidyverse.org'>tidyverse</a></span><span class='op'>)</span></span>
-<span><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://dplyr.tidyverse.org'>dplyr</a></span><span class='op'>)</span></span></code></pre>
-</div>
-</div>
-<h1 id="fist-lets-clean-up-the-report-card-data">Fist Lets Clean Up The Report Card Data</h1>
+<h1 id="first-lets-clean-up-the-report-card-data">First Lets Clean Up The Report Card Data</h1>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span><span class='va'>report_card</span> <span class='op'>&lt;-</span> <span class='va'>X2023_2024_district_report_card</span> </span>
@@ -1745,7 +1745,7 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 <span>    <span class='st'>"Overall Accountability Score"</span> <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/numeric.html'>as.numeric</a></span><span class='op'>(</span><span class='va'>`Overall Accountability Score`</span><span class='op'>)</span><span class='op'>)</span></span></code></pre>
 </div>
 </div>
-Now that its fixed we can calculate the Per-Pupil Price, which the Total Current Education Cost decided by the District Enrollment.
+<p>Now that its fixed we can calculate the Per-Pupil Price, which the Total Current Education Cost decided by the District Enrollment.</p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span><span class='va'>school_district</span> <span class='op'>&lt;-</span> <span class='va'>school_district</span> <span class='op'>|&gt;</span></span>
@@ -1791,7 +1791,7 @@ Now that its fixed we can calculate the Per-Pupil Price, which the Total Current
 <span></span>
 <span><span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span><span class='op'>(</span><span class='va'>school_district_graph</span><span class='op'>)</span></span></code></pre>
 </div>
-<p><img src="index_files/figure-html5/unnamed-chunk-11-1.png" alt="" width="624" /></p>
+<p><img src="index_files/figure-html5/Making-The-Graph-1.png" alt="" width="624" /></p>
 </div>
 <h1 id="looking-at-the-data-through-the-lens-of-a-table.">Looking at the data through the lens of a table.</h1>
 <p>For this table I want to look at the data and see the averages of the TCEC of per-pupil for each category of performance. These ranges of performance score 0 - 48.9 “Fails to Meet Expectations,” 49 - 59.9 “Meets Few Expectations,” 60 - 70.9 “Meets Expectations,” 71 - 83.9 “Exceeds Expectations,” and 84 - 100 “Significantly Exceeds Expectations”</p>
@@ -1843,7 +1843,7 @@ Now that its fixed we can calculate the Per-Pupil Price, which the Total Current
 <pre class="sourceCode r"><code class="sourceCode r"><span><span class='va'>school_district_graph</span> <span class='op'>+</span></span>
 <span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/geom_smooth.html'>geom_smooth</a></span><span class='op'>(</span>method <span class='op'>=</span> <span class='st'>"lm"</span>, se <span class='op'>=</span> <span class='cn'>FALSE</span>, color <span class='op'>=</span> <span class='st'>"brown4"</span>, size <span class='op'>=</span> <span class='fl'>1.5</span><span class='op'>)</span></span></code></pre>
 </div>
-<p><img src="index_files/figure-html5/unnamed-chunk-13-1.png" alt="" width="624" /></p>
+<p><img src="index_files/figure-html5/Looking-At-the-Regression-1.png" alt="" width="624" /></p>
 </div>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
