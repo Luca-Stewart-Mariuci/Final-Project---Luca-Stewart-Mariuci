@@ -1773,8 +1773,9 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 #   `Grade Band for Comparison` &lt;chr&gt;, `District Enrollment` &lt;dbl&gt;,
 #   `Per-Pupil Price` &lt;dbl&gt;</code></pre>
 </div>
-<h1 id="now-lets-graph-it">Now Lets Graph it</h1>
-<p>Since we not finally have the two variables we need we can now visualize it. To do so we are going to use a scatter plot. To create this scatter plot we are going to use the variables Per-Pupil Price as the X-axis and the Overall Accountability Score as the Y-axis.</p>
+<h2 id="results">Results</h2>
+<h1 id="looking-at-the-results">Looking at the results</h1>
+<p>Code for</p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span><span class='va'>school_district_graph</span> <span class='op'>&lt;-</span> <span class='va'>school_district</span> <span class='op'>|&gt;</span></span>
@@ -1787,14 +1788,9 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 <span>    x <span class='op'>=</span> <span class='st'>"Per-Pupil Price Per Distirct"</span>,</span>
 <span>    y <span class='op'>=</span> <span class='st'>"Overall Accountability Score Per District"</span>,</span>
 <span>    caption <span class='op'>=</span> <span class='st'>"Wisconsin Department of Public Instruction"</span></span>
-<span>  <span class='op'>)</span></span>
-<span></span>
-<span><span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span><span class='op'>(</span><span class='va'>school_district_graph</span><span class='op'>)</span></span></code></pre>
+<span>  <span class='op'>)</span></span></code></pre>
 </div>
-<p><img src="index_files/figure-html5/Making-The-Graph-1.png" alt="" width="624" /></p>
 </div>
-<h1 id="looking-at-the-data-through-the-lens-of-a-table.">Looking at the data through the lens of a table.</h1>
-<p>For this table I want to look at the data and see the averages of the TCEC of per-pupil for each category of performance. These ranges of performance score 0 - 48.9 “Fails to Meet Expectations,” 49 - 59.9 “Meets Few Expectations,” 60 - 70.9 “Meets Expectations,” 71 - 83.9 “Exceeds Expectations,” and 84 - 100 “Significantly Exceeds Expectations”</p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span><span class='va'>mean_tcec_by_category</span> <span class='op'>&lt;-</span> <span class='va'>school_district</span> <span class='op'>|&gt;</span></span>
@@ -1802,66 +1798,47 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 <span>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/summarise.html'>summarize</a></span><span class='op'>(</span></span>
 <span>    `Mean of Per-Pupil TCEC` <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/mean.html'>mean</a></span><span class='op'>(</span><span class='va'>`Per-Pupil Price`</span>, na.rm <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>,</span>
 <span>    `Number` <span class='op'>=</span> <span class='fu'><a href='https://dplyr.tidyverse.org/reference/context.html'>n</a></span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>|&gt;</span></span>
-<span>  <span class='fu'>knitr</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/knitr/man/kable.html'>kable</a></span><span class='op'>(</span>digits <span class='op'>=</span> <span class='fl'>2</span><span class='op'>)</span></span>
-<span><span class='va'>mean_tcec_by_category</span></span></code></pre>
+<span>  <span class='fu'>knitr</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/knitr/man/kable.html'>kable</a></span><span class='op'>(</span>digits <span class='op'>=</span> <span class='fl'>2</span><span class='op'>)</span></span></code></pre>
 </div>
-<table>
-<thead>
-<tr class="header">
-<th style="text-align: left;">Overall Accountability Rating</th>
-<th style="text-align: right;">Mean of Per-Pupil TCEC</th>
-<th style="text-align: right;">Number</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: left;">Exceeds Expectations</td>
-<td style="text-align: right;">14628.60</td>
-<td style="text-align: right;">126</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Meets Expectations</td>
-<td style="text-align: right;">16132.75</td>
-<td style="text-align: right;">201</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Meets Few Expectations</td>
-<td style="text-align: right;">16692.08</td>
-<td style="text-align: right;">24</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Significantly Exceeds Expectations</td>
-<td style="text-align: right;">13703.76</td>
-<td style="text-align: right;">22</td>
-</tr>
-</tbody>
-</table>
 </div>
 <h1 id="regression">Regression</h1>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
-<pre class="sourceCode r"><code class="sourceCode r"><span><span class='va'>school_district_graph</span> <span class='op'>+</span></span>
-<span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/geom_smooth.html'>geom_smooth</a></span><span class='op'>(</span>method <span class='op'>=</span> <span class='st'>"lm"</span>, se <span class='op'>=</span> <span class='cn'>FALSE</span>, color <span class='op'>=</span> <span class='st'>"brown4"</span>, size <span class='op'>=</span> <span class='fl'>1.5</span><span class='op'>)</span></span></code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='va'>reg_school_district_graph</span> <span class='op'>&lt;-</span> <span class='va'>school_district_graph</span> <span class='op'>+</span></span>
+<span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/geom_smooth.html'>geom_smooth</a></span><span class='op'>(</span>method <span class='op'>=</span> <span class='st'>"lm"</span>, color <span class='op'>=</span> <span class='st'>"brown4"</span>, size <span class='op'>=</span> <span class='fl'>1.5</span><span class='op'>)</span></span>
+<span></span>
+<span><span class='va'>reg_school_district_graph</span></span></code></pre>
 </div>
 <p><img src="index_files/figure-html5/Looking-At-the-Regression-1.png" alt="" width="624" /></p>
 </div>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
-<pre class="sourceCode r"><code class="sourceCode r"><span><span class='va'>tcec_reg</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/stats/lm.html'>lm</a></span><span class='op'>(</span><span class='va'>`Overall Accountability Score`</span> <span class='op'>~</span> <span class='va'>`Per-Pupil Price`</span> , data <span class='op'>=</span> <span class='va'>school_district</span><span class='op'>)</span></span>
-<span><span class='va'>tcec_reg</span></span></code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='va'>tcec_reg</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/stats/lm.html'>lm</a></span><span class='op'>(</span><span class='va'>`Overall Accountability Score`</span> <span class='op'>~</span> <span class='va'>`Per-Pupil Price`</span>, data <span class='op'>=</span> <span class='va'>school_district</span><span class='op'>)</span></span>
+<span></span>
+<span><span class='va'>tcec_reg</span> <span class='op'>|&gt;</span> <span class='fu'><a href='https://rdrr.io/r/base/summary.html'>summary</a></span><span class='op'>(</span><span class='op'>)</span></span></code></pre>
 </div>
 <pre><code>
 Call:
 lm(formula = `Overall Accountability Score` ~ `Per-Pupil Price`, 
     data = school_district)
 
+Residuals:
+     Min       1Q   Median       3Q      Max 
+-17.7323  -5.0999  -0.6197   3.9103  25.5672 
+
 Coefficients:
-      (Intercept)  `Per-Pupil Price`  
-       81.2745581         -0.0007937  </code></pre>
+                    Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept)       81.2745581  2.0205189  40.225  &lt; 2e-16 ***
+`Per-Pupil Price` -0.0007937  0.0001277  -6.218 1.36e-09 ***
+---
+Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+
+Residual standard error: 7.692 on 371 degrees of freedom
+Multiple R-squared:  0.09437,   Adjusted R-squared:  0.09192 
+F-statistic: 38.66 on 1 and 371 DF,  p-value: 1.361e-09</code></pre>
 </div>
-<p>When looking at the slope and intercept we can see that the more money that is given to it is predicted to get 0.0007937 percent worse. This means that the decrease of the slope is so small that it likely is not have a significant impact. This implied that the more money that you give to a school, it is not expected to make a diffrence.</p>
-<h2 id="looking-at-the-results">Looking at the Results</h2>
-<p>When looking at the results we can see that for the average the groups that receive the most money are the groups in the middle, that being Meets Expectations and Exceeds Expectations. While the groups that have lowest per-pupil average are Significantly Exceeds and Meets few expectations. While the results do not support my hypothesis it also doesn’t fully disprove it. It suggest that their is a disparity of the funding, but the full picture does change since the group with the least amount per-pupil average is those who have the highest scores.</p>
+<p>When looking at the regression we can see that for each dollar spent there is 0.0007937 decrease in the Overall Accountability Score, in a larger scale for each 1000 dollars spent WI schools get 0.7937 percent worse. The P-Value is below 0.5 so their is a statistic correlation. ===</p>
+<p>While there is a correlation between negative correlation between the funding of schools and their report card score, there are more factors in play then just funding for a schools performance.</p>
 <div class="sourceCode" id="cb10"><pre class="sourceCode r distill-force-highlighting-css"><code class="sourceCode r"></code></pre></div>
 <!--radix_placeholder_article_footer-->
 <!--/radix_placeholder_article_footer-->
