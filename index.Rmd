@@ -7,167 +7,344 @@ output:
     self_contained: false
 ---
 
-### Schools Districts Performace and Per-Pupil Score: Does the Amount of Money Spent Increase Quality of Education
+#### Schools Districts Spending: What Effect Does School District Spending Have On Quality and Performance of Education
 
+### Introduction
 
-## Introduction
+For this final project I wanted to look at the relationship of the amount of money a school district spends per student and the school district performance. This is done by looking at the impact the Per-Pupil Price has on the Overall Accountability Score. Wisconsin calculates the cost of education in three different ways, because of that we will look at all three to better understand the impact that school funding has on the education outcomes. These three calculations of school districts spending are `Total Current Education Cost,` `Total Education Cost,` and `Total District Cost.`
+  If the a school district has a higher Per-Pupil Price, in any one of the three calculation methods, then the Overall Accountability Score will be higher for that school district. This is because the more money a school district spends on an individual student, then in turn that student would have more support and have higher scores in both academics and personal growth. 
+  
+This question and research topic is important because funding is one the go-to ways in conversations about how to improve schools. If data suggests that funding in education is has positive effects on school performance then increasing funding could be beneficial, or if it has a neutral or negative effect then it would suggest that their are other factors in play that have a large impact on the quality of education.
 
+### Data Section
 
-For this research project we are looking what the impact of funding has in performance public school districts. To understand the relationship between the funding and the performance of a school district we will be looking at two variables. The `Per-Pupil Price`, which is the Total Current Education Cost, the total amount of money a school district spends in total decided by the total amount of students/members in a district, and the `Overall Accountability Score,` a comprehensive measurement of a school performance, this included both achievement: this looks at grades, performance on state tests, and resources to second-education and growth: which includes academic growth, students backgrounds in education, and impact a school has on student outcomes. This leads to my prediction that the higher Per-Pupil Price a school has, the higher the Overall accountability score will be. This information is interesting because public school funding is one a hot-buttoned issue, with many arguing that the lack of funding a school has the worse the students do. For the purposes of this research all data comes from the Wisconsin department of Public Instruction, and all is only looking at the Per-Pupil Price and Overall Accountability scores of Wisconsin school districts.
+# looking at the variables
 
-Does the average per-pupil price, that being the average amount of money a school district spends, in Wisconsin affect the average report card score school for that district. My hypothesis is that the higher a per-pupil price is, the higher the average student performance will be in said district. This is because the more money a school district spends on an individual student means that the students will have more resources available to them. This will then lead to a higher performance of students in said district. To better understand this I will be looking at two variables, the per-pupil price and the average report card score for the 2023-2024 school year. The explanatory variable will be the per-pupil price. This variable will show the average amount of money a Wisconsin public school district is spending on one student. This variable is obtained by looking at the Total Cost of Education, also known as the TEC, then dividing it by the membership of a given district. The variable of interest will be the average report card score per district. The report card score is the average performance of students in a public school district. This score is based on multiple factors including, performance in subjects, growth of students in different subjects, the ability to close the achievement gaps, and on track and post secondary readiness of students. This score is on 0.0 - 100.00 point scale, with 0.0 being the worst a school distinct can do, and 100.00 being the best. Both variables are taken from the Department of Public Instruction, which by law collects and publishes this data. An outcome that would support my hypothesis would be one that showcases the school districts that have the highest per-pupil price, and would also have the highest average report card score. There are two potential outcomes that would disprove my hypothesis. One would be one that showcases that having a higher per-pupil price would show a lower report card score. Suggesting that the schools that pay the most per student are those with a lower report card score trying to increase it. The second outcome would be one that per-pupil price doesn't impact the average report card score. Showing there isn't a relationship between the two variables and would imply another factor for student performance.
+Overall Accountability Score
+  This score is based of the performance of students in a public school district.   There are multiple factors in the calculation these include performance in        subjects, growth of students in different subjects, the ability to close the      achievement gaps, students determined to be on track, ability to help English     Second Language students, students in special education programs, and post        secondary readiness of students. 
+    This score is on 0.0 - 100.00 point scale, with 0.0 being the worst a school    distinct can do, and 100.00 being the best. Then it assigns a report card score   which consists of
+    Fails to Meet Expectations: which 0.0 - 48.9
+    Meets Few Expectations: 49.0 - 59.9
+    Meets Expectations: 60.0 - 70.9
+    Exceeds Expectations: 71.0 - 83.9
+    Significantly Exceeds Expectations: 84.0 - 100
+  (zero schools in Wisconsin Fail to Meet Expectations)
 
-## Data being used for My Reasearch Project
+Per-Pupil Price
+  This score is the average amount of spending divided by the total member/student   count.
+    The Wisconsin Department of Public Instruction has three ways to calculate the   total costs. Because of this, and wanting to ensure that there are no             discrepancies between the different ways to calculate the cost of education this   project will look at all three. 
+    Total Current Education Costs (TCEC): Includes the general fund instructional costs, Special project fund instructional costs, and instructional support services
+    Total Education Costs (TEC): TCEC + transportation, facility acquisition costs, and debt services.
+    Total District Costs (TDC): Total district spending, TCEC + TEC and things like food and community based services. 
 
-```{r Loading Packages into R}
+  Then by dividing the total cost per each total by member/student we get the Per-Pupil Price of all three total sums TCEC Per-Pupil Price, TEC Per-Pupil Price, and TDC Per-Pupil Price.
+  
+# Loading Pachages and Data
+
+```{r}
+# Loading needed packages into R.
 library(tidyverse)
 library(dplyr)
+library(ggplot2)
+library(broom)
+library(modelsummary)
 ```
 
-
-```{r loading-the-data-into-R}
+```{r}
+# Loading Report Card scores into R.
 library(readxl)
 X2023_2024_district_report_card <- read_excel("2023-2024_district_report_card.xlsx")
-head(X2023_2024_district_report_card)
+
+# This will give us the data for the Overall Accountability Score.
 ```
 ```{r}
+# Loading school districts expenditures into R.
 library(readxl)
 cmpcst24_1_ <- read_excel("cmpcst24 (1).xlsx")
-head(cmpcst24_1_)
+
+# This will give us the data for the different education costs totals and the total number of students per district.
 ```
 
-## Cleaning Data Up and Visualizing it.
+### Final Project Code
 
-For my research project I need to clean up the two data sets, both which are released from the Wisconsin Department of Public Instruction. The first set was released as a part of the annual report card data, This data shows the score that each school receives, it also has another important variable being School District Members, which is the number of students who attend school in a given district. The second data set is a apart of the annual release of expenditures. This data set has an important data for my project being TCEC, Total Current Education Cost. I will need to use the School District Member and TCEC to calculate the Per-Pupil Price, which is the average amount of money a school district spends for each student they have.
+# Selecting Data Needed Cleaning Up The Data Sets
 
-# First Lets Clean Up The Report Card Data
+With the importing of the data there were some issues of how the data was displayed and how it is interpreted, this section cleans it up and fixes all that.
 
-```{r Selecting-the-Data-Needed}
+```{r}
+# Reassigning the data and selecting what I need.
 report_card <- X2023_2024_district_report_card 
 
 report_card <- report_card |>
   select("District Name", "Overall Accountability Score", "Overall Accountability Rating",
          "Grade Band for Comparison", "District Enrollment") 
-
-report_card
 ```
 
-First I needed to assign the data to a new object. I did this so I could later save the select columns back into the new object without messing up the original data set.
+```{r}
+# Reassigning the data and selecting what I need.
+district_cost <- cmpcst24_1_
 
-When cleaning up the data set I only had to isolate the columns I wanted being, District, Overall Accountability score, the total score a school gets out of 100 this is based on multiple factors including test scores, graduation rates, post graduation success, ect. We also needed the Overall Accountability Rating which is the rating a school is given based on their score, and District Enrollment. This leads us with all the data from the data set for the project.
-
-
-#Lets clean up Ttal Current Education Cost Data
-
-Next we will isolate the columns we need, being the school district and the TCEC (total current cost of education), this is the total expenditures of each district.
-
-```{r Selecting-the-Data-Needed-2}
-tcec_per_district <- cmpcst24_1_
-
-tcec_per_district <- tcec_per_district |>
-  select("...5", "...6")
-
-tcec_per_district
+district_cost <- district_cost |>
+  select("...5", "...6", "...9", "...11")
 ```
 
-Then we will rename the columns because for some reason when importing the data it messed up the names of the columns, naming them ...5 and ...6 instead of Total Current Education Cost and District Name.
-
-```{r Renaming-the-Data}
-tcec_per_district <- tcec_per_district |>
+```{r}
+#Giving proper names to the columns.
+district_cost <- district_cost |>
   rename(
     `District Name` = `...5`,
-    `TCEC` = `...6`) 
-
-tcec_per_district
+    `TCEC` = `...6`,
+    `TEC` = `...9`,
+    `TDC` = `...11`) 
 ```
 
-After fixing the column names we will need to get rid of any NA's or other random names that entered the data when importing it. It also gets rid of any school districts that lack funding data.
-
-```{r Cleaning-Up-the-Data-Through-Filter}
-tcec_per_district <- tcec_per_district |>
+```{r}
+# Getting rid the errors in the importing of the education cost data set.
+district_cost <- district_cost |>
   filter(
-  `District Name` != " ", `District Name`!= "NAME", `District Name` != "18310.044339754681", 
+  `District Name` != " ", 
+  `District Name` != "NAME", 
+  `District Name` != "18310.044339754681",
   `District Name` != "Statewide Total")
   
-tcec_per_district
 ```
 
-# Now Lets Join These Data Sets
+Joining The Data Sets
 
-We are going to use inner_join to combine report_card and tcec_per_district, this will get ride of any variable that don't match up for the two data sets. I am also assigning it to the a new data set called school district, since its now all the info we need for each school district.
-
-```{r Joining-The-Data-Sets}
-school_district <- tcec_per_district |>
+```{r}
+# joining the report card score to the district score.
+school_district <- district_cost |>
   inner_join(report_card)
 
-school_district
+# Joining the data on the school district name and then creating a new variable with all of the data.
 ```
 
-First I need to resign some numbers that are considers by are to be Characters. This involved using mutate() and as.numeric() for TCEC and Overall Accountability Score because those variables were assigned <chr> instead of <dbl>.
+Creating and Editing Variables
 
-```{r Creating-Numeric-Based-Variables}
+```{r}
+# Fixes the variables so R reads them as numeric values.
 school_district <- school_district |>
   mutate(
     "TCEC" = as.numeric(`TCEC`),
+    "TEC" = as.numeric(`TEC`),
+    "TDC" = as.numeric(`TDC`),
     "Overall Accountability Score" = as.numeric(`Overall Accountability Score`))
 ```
 
-
-Now that its fixed we can calculate the Per-Pupil Price, which the Total Current Education Cost decided by the District Enrollment.
-
-```{r Creating-the-Per-Pupil-Price}
+```{r}
+# Creating-the-Per-Pupil-Price
 school_district <- school_district |>
     mutate(
-      "Per-Pupil Price" = `TCEC` / `District Enrollment`
+      "TCEC Per-Pupil Price" = `TCEC` / `District Enrollment`,
+      "TEC Per-Pupil Price" = `TEC` / `District Enrollment`,
+      "TDC Per-Pupil Price" = `TDC` / `District Enrollment`
       )
-    
-school_district
+# This calculates all of the Per-Pupil Prices.
 ```
 
-## Results
+# Looking at the school_district and visualizing it
+
+To better visualize the data here is a Bar Plot, this plot showcases how many schools fall into each report card score category.
+
+```{r plot-only, echo=FALSE}
+# Making a graph that showcases the amount of schools that fall in each report report card score
+report_card_bar_chart <- school_district |>
+   mutate(`Overall Accountability Rating` = factor(
+    `Overall Accountability Rating`,
+    levels = c(
+      "Meets Few Expectations",
+      "Meets Expectations",
+      "Exceeds Expectations",
+      "Significantly Exceeds Expectations"
+    ) # This changes the order in which they apear on the graph
+  )) |>
+  ggplot(aes(x = `Overall Accountability Rating`)) +
+  geom_bar(fill = "steelblue", color = "black", ) +
+  labs(
+    title = "Distribution of Accountability Ratings Across Wisconsin Districts",
+    x = "Overall Accountability Rating",
+    y = "Number of Districts",
+  ) +
+  theme(axis.text.x = element_text(angle = 35, hjust = 1)) 
+# Changes angle of text to prevent overlap.
+
+report_card_bar_chart
+```
 
 
-# Looking at the results
-Code for 
+## Looking at diffrent means of calculating the price
 
-```{r Making-The-Graph}
-school_district_graph <- school_district |>
-  ggplot(aes(x = `Per-Pupil Price`,
+# Looking at TCEC
+
+```{r plot-only, echo=FALSE}
+# Making the graph for the distribution of TCEC
+tcec_school_district_graph <- school_district |>
+  ggplot(aes(x = `TCEC Per-Pupil Price`,
              y = `Overall Accountability Score`)) + 
   geom_point() +
   labs(
-    title = "Impact of The Funding Per Student and Impact it Has",
-    subtitle = "Comparison of The Per-Pupil Price and The Overall Accountavility Score Per School Distirct",
-    x = "Per-Pupil Price Per Distirct",
+    title = "Impact of The Total Current Education Cost Per Student and Impact it Has",
+    subtitle = "Comparison of The TCEC Per-Pupil Price and The Overall Accountavility Score Per School Distirct",
+    x = "TCEC Per-Pupil Price Per Distirct",
     y = "Overall Accountability Score Per District",
     caption = "Wisconsin Department of Public Instruction"
   )
+tcec_school_district_graph
 ```
 
-```{r Creating-a-Table-Based-On-Overall-Accountability-Rating}
-mean_tcec_by_category <- school_district |>
+
+# Looking at TEC
+
+```{r plot-only, echo=FALSE}
+tec_school_district_graph <- school_district |>
+  ggplot(aes(x = `TCEC Per-Pupil Price`,
+             y = `Overall Accountability Score`)) + 
+  geom_point() +
+  labs(
+    title = "Impact of The Total Education Cost Per Student and Impact it Has",
+    subtitle = "Comparison of The TEC Per-Pupil Price and The Overall Accountavility Score Per School Distirct",
+    x = "TEC Per-Pupil Price Per Distirct",
+    y = "Overall Accountability Score Per District",
+    caption = "Wisconsin Department of Public Instruction"
+  )
+
+tec_school_district_graph
+```
+
+# Looking at TDC
+
+```{r plot-only, echo=FALSE}
+tdc_school_district_graph <- school_district |>
+  ggplot(aes(x = `TDC Per-Pupil Price`,
+             y = `Overall Accountability Score`)) + 
+  geom_point() +
+  labs(
+    title = "Impact of The Total District Cost Per Student and Impact it Has",
+    subtitle = "Comparison of The TDC Per-Pupil Price and The Overall Accountavility Score Per School Distirct",
+    x = "TDC Per-Pupil Price Per Distirct",
+    y = "Overall Accountability Score Per District",
+    caption = "Wisconsin Department of Public Instruction"
+  )
+
+tdc_school_district_graph
+```
+
+```{r plot-only, echo=FALSE}
+# Creating a Table with the mean of spending with each form of education cost based on the category 
+
+mean_table <- school_district |>
+  mutate(`Overall Accountability Rating` = factor(
+    `Overall Accountability Rating`,
+    levels = c(
+      "Meets Few Expectations",
+      "Meets Expectations",
+      "Exceeds Expectations",
+      "Significantly Exceeds Expectations"
+    )
+  )) |>
   group_by(`Overall Accountability Rating`) |>
   summarize(
-    `Mean of Per-Pupil TCEC` = mean(`Per-Pupil Price`, na.rm = TRUE),
-    `Number` = n()) |>
+    `Mean of Per-Pupil TCEC` = mean(`TCEC Per-Pupil Price`, na.rm = TRUE),
+    `Mean of Per-Pupil TEC`  = mean(`TEC Per-Pupil Price`, na.rm = TRUE),
+    `Mean of Per-Pupil TDC`  = mean(`TDC Per-Pupil Price`, na.rm = TRUE),
+    Number = n()
+  ) |>
   knitr::kable(digits = 2)
-```
 
+mean_table
+```
 
 # Regression
 
-```{r Looking-At-the-Regression}
-reg_school_district_graph <- school_district_graph +
+```{r plot-only, echo=FALSE}
+# Graphing the regression of TCEC.
+tcec_reg_school_district_graph <- tcec_school_district_graph +
   geom_smooth(method = "lm", color = "brown4", size = 1.5)
 
-reg_school_district_graph
+tcec_reg_school_district_graph
 ```
 
-```{r Calculating-the-Regression}
-tcec_reg <- lm(`Overall Accountability Score` ~ `Per-Pupil Price`, data = school_district)
+```{r}
+# Finding the Regression of TCEC
+tcec_reg <- lm(`Overall Accountability Score` ~ `TCEC Per-Pupil Price`, data = school_district)
 
 tcec_reg |> summary()
+ 
 ```
-When looking at the regression we can see that for each dollar spent there is 0.0007937 decrease in the Overall Accountability Score, in a larger scale for each 1000 dollars spent WI schools get 0.7937 percent worse. The P-Value is below 0.5 so their is a statistic correlation. ===
+
+```{r plot-only, echo=FALSE}
+# Creating a Table of TCEC Regression
+tcec_reg_table <- tcec_reg |> 
+  broom::tidy() |> 
+  kable(
+    caption = "Regression of Accountability Score on Per-Pupil TCEC",
+    col.names = c("Term", "Estimate", "Std. Error", "T-Stat", "P-Value"), 
+    digits = 2
+  )
+
+```
+
+```{r plot-only, echo=FALSE}
+# Graphing the regression of TEC.
+tec_reg_school_district_graph <- tec_school_district_graph +
+  geom_smooth(method = "lm", color = "yellow1", size = 1.5)
+
+tec_reg_school_district_graph
+```
+```{r}
+# Finding the Regression of TEC
+tec_reg <- lm(`Overall Accountability Score` ~ `TEC Per-Pupil Price`, data = school_district)
+
+tec_reg |> summary()
+ 
+```
+
+```{r plot-only, echo=FALSE}
+# Creating a Table of TEC Regression
+tec_reg_table <- tec_reg |> 
+  broom::tidy() |> 
+  kable(
+    caption = "Regression of Accountability Score on Per-Pupil TEC",
+    col.names = c("Term", "Estimate", "Std. Error", "T-Stat", "P-Value"), 
+    digits = 2
+  )
+
+```
+
+
+```{r plot-only, echo=FALSE}
+# Graphing the regression of TDC.
+tdc_reg_school_district_graph <- tdc_school_district_graph +
+  geom_smooth(method = "lm", color = "blue1", size = 1.5)
+
+tdc_reg_school_district_graph
+```
+
+```{r}
+# Finding the Regression of TDC
+tdc_reg <- lm(`Overall Accountability Score` ~ `TDC Per-Pupil Price`, data = school_district)
+
+tdc_reg |> summary()
+ 
+```
+
+```{r plot-only, echo=FALSE}
+# Creating a Table of TDC Regression
+tdc_reg_table <- tdc_reg |> 
+  broom::tidy() |> 
+  kable(
+    caption = "Regression of Accountability Score on Per-Pupil TDC",
+    col.names = c("Term", "Estimate", "Std. Error", "T-Stat", "P-Value"), 
+    digits = 2
+  )
+
+```
+
+When looking at the regression we can see that for each dollar spent there is 0.0007937 decrease in the Overall Accountability Score, in a larger scale for each 1000 dollars spent WI schools get 0.7937 percent worse. The P-Value is below 0.5 so their is a statistic correlation.
 
 While there is a correlation between negative correlation between the funding of schools and their report card score, there are more factors in play then just funding for a schools performance.
+
+```{r}
+school_district
+```
+
